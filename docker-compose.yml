@@ -1,0 +1,61 @@
+services:
+
+  chirpstack-concentratord:
+    
+    container_name: chirpstack-concentratord
+
+    # use pre-defined image
+    image: xoseperez/chirpstack-concentratord
+
+    # or comment out image: and build it yourself
+    #build:
+    #  context: .
+    #  args:
+    #    ARCH: amd64
+    #    VERSION: 4.3.6
+
+    restart: unless-stopped
+    privileged: true
+    #network_mode: host
+    #ipc: host
+    #user: "${PUID:-1000}:${PGID:-1000}"
+
+    volumes:
+      - /tmp:/tmp
+    
+    #devices:
+    #  - /dev/ttyACM0
+    #  - /dev/spidev0.0
+    #  - /dev/gpiochip0 
+
+    #group_add:
+    #  - "dialout"           # provides permissions to access USB concentrators
+    #  - ${PGID_GPIO:-997}
+    #  - ${PGID_I2C:-998}
+    #  - ${PGID_SPI:-999}
+
+    environment:
+
+      # Select the concentrator model (required, either RAK or chirpstack-concentratord naming)
+      MODEL: "RAK7271"
+
+      # Select the interface the concentrator uses (defaults to "SPI", "USB" only supported for SX1302/3 devices)
+      #INTERFACE: "SPI"
+
+      # Reset GPIO for SPI SX1301/2/3 devices
+      #RESET_GPIO: 17
+
+      # Power enable GPIO for SPI SX1302 devices
+      #POWER_EN_GPIO: 0
+
+      # Set to 1 if concentrator has built-in GPS (set by default for some known concentrators)
+      #HAS_GPS: 0
+
+      # Select the region (not needed for 2G4 concentrators, defaults to EU868 for the rest)
+      #REGION: "EU868"
+
+      # Select the channels (some regions have more than one channel set)
+      #CHANNELS: "US915_0"
+
+      # Set concentratord debug level (TRACE, DEBUG, INFO*, WARN, ERROR, OFF)
+      #DEBUG: "INFO"
