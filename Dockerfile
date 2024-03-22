@@ -20,9 +20,11 @@ WORKDIR /opt/chirpstack
 
 # Checkout and compile remote code
 RUN mkdir -p binaries
-COPY ./binaries/chirpstack-concentratord-sx1301_${VERSION}_${ARCH}.tar.gz ./binaries/chirpstack-concentratord-sx1301.tar.gz
-COPY ./binaries/chirpstack-concentratord-sx1302_${VERSION}_${ARCH}.tar.gz ./binaries/chirpstack-concentratord-sx1302.tar.gz
-COPY ./binaries/chirpstack-concentratord-2g4_${VERSION}_${ARCH}.tar.gz ./binaries/chirpstack-concentratord-2g4.tar.gz
+ARG DOWNLOAD_FROM=https://github.com/xoseperez/chirpstack-concentratord/releases/download
+ARG FILE=chirpstack-concentratord
+ADD --chmod=666 ${DOWNLOAD_FROM}/${VERSION}/${FILE}-sx1301_${VERSION}_${ARCH}.tar.gz ./binaries/${FILE}-sx1301.tar.gz
+ADD --chmod=666 ${DOWNLOAD_FROM}/${VERSION}/${FILE}-sx1302_${VERSION}_${ARCH}.tar.gz ./binaries/${FILE}-sx1302.tar.gz
+ADD --chmod=666 ${DOWNLOAD_FROM}/${VERSION}/${FILE}-2g4_${VERSION}_${ARCH}.tar.gz ./binaries/${FILE}-2g4.tar.gz
 
 # Copy fles from builder and repo
 COPY ./runner/ ./

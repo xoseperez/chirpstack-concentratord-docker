@@ -6,7 +6,7 @@
 # Globals
 # -----------------------------------------------------------------------------
 
-VERSION="4.3.6"
+VERSION="4.3.6r1"
 PUSH=0
 TARGETS=()
 MANIFEST_TOOL=manifest-tool
@@ -103,7 +103,7 @@ manifests:
       os: linux  
 EOL
 
-    #${MANIFEST_TOOL} push from-spec ${MANIFEST_FILE}
-    #rm ${MANIFEST_FILE}
+    ${MANIFEST_TOOL} push from-spec ${MANIFEST_FILE}
+    rm ${MANIFEST_FILE}
 
 fi
