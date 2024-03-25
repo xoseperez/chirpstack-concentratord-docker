@@ -1,0 +1,4 @@
+#!/bin/bash
+
+GATEWAY_EUI=$( ./gateway-id -c ipc:///tmp/${SOCKET_NAME:-concentratord}_command )
+echo "${GATEWAY_EUI^^}"
