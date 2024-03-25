@@ -59,3 +59,6 @@ services:
 
       # Set concentratord debug level (TRACE, DEBUG, INFO*, WARN, ERROR, OFF)
       #DEBUG: "INFO"
+
+      # Set the IPC socket name to use to communicate with chirpstack-mqtt-forwarder, chirpstack-udp-forwarder or chirpstack-gateway-relay
+      #SOCKET_NAME: "concentratord"
