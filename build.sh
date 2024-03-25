@@ -47,6 +47,8 @@ done
 
 BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 REGISTRY=${REGISTRY:-"xoseperez/chirpstack-concentratord"}
+UPSTREAM_VERSION=${VERSION%r*}
+UPSTREAM_MAJOR=${VERSION%%.*}
 
 export VERSION
 export BUILD_DATE
@@ -60,7 +62,7 @@ if [[ ${PUSH} -eq 1 ]]; then
 
   # Ask confirmation if pushing to a registry
   echo "Pushing image into ${REGISTRY}"
-  echo "Tags: ${VERSION}, latest"
+  echo "Tags: ${VERSION}, ${UPSTREAM_VERSION}, ${UPSTREAM_MAJOR}, latest"
   read -r -p "Are you sure? [y/N] " RESPONSE
   if [[ ! "${RESPONSE}" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     echo "Cancelled"
@@ -87,7 +89,7 @@ if [[ ${PUSH} -eq 1 ]] && [[ ${#TARGETS[@]} -eq 0 ]]; then
 
     cat > ${MANIFEST_FILE} << EOL
 image: ${REGISTRY}:${VERSION}
-tags: ['${VERSION}', 'latest']
+tags: ['${VERSION}',${UPSTREAM_VERSION},${UPSTREAM_MAJOR},'latest']
 manifests:
   - image: ${REGISTRY}:aarch64-latest
     platform:
