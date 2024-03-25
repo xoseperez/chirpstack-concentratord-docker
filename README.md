@@ -14,14 +14,53 @@ These variables you can set them under the `environment` tag in the `docker-comp
 
 Variable Name | Value | Description | Default
 ------------ | ------------- | ------------- | -------------
-**`MODEL`** | `STRING` | Concentrator model. Required, either RAK or chirpstack-concentratord | 
+**`DEBUG`** | `STRING` | Set concentratord debug level (TRACE, DEBUG, INFO*, WARN, ERROR, OFF) | `INFO`
+**`MODEL`** | `STRING` | Concentrator model. Required. See list below | 
 **`INTERFACE`** | `SPI` or `USB` | Concentrator interface. `USB` only supported for SX1302/3 devices | Defaults to `SPI`
 **`RESET_GPIO`** | `INT` | Reset GPIO for SPI SX1301/2/3 devices | `17`
 **`POWER_EN_GPIO`** | `INT` | Power enable GPIO for SPI SX1302 devices | `0` (no power enable GPIO)
 **`HAS_GPS`** | `0` or `1` | Set if concentrator has built-in GPS | some models have it enabled by default
 **`REGION`** | `STRING` | Select the region (not needed for 2G4 concentrators) | `EU868`
 **`CHANNELS`** | `STRING` | Select the channels (some regions have more than one channel set) | `EU868`
-**`DEBUG`** | `STRING` | Set concentratord debug level (TRACE, DEBUG, INFO*, WARN, ERROR, OFF) | `INFO`
+**`SOCKET_NAME`** | `STRING` | IPC socket prefix to use to communicate with other services | `concentratord`
+
+## Use
+
+Check the included `docker-compose.yml` file for a usage example.
+
+## Supported models
+
+The `MODEL` must be set to one of the supported concentrators in the list below:
+
+* dragino_pg1302
+* imst_ic880a
+* kerlink_ifemtocell
+* multitech_mtac_003e00
+* multitech_mtac_003u00
+* multitech_mtac_lora_2g4 
+* multitech_mtac_lora_h_868
+* multitech_mtac_lora_h_915 
+* multitech_mtcap_lora_868
+* multitech_mtcap_lora_915
+* pi_supply_lora_gateway_hat
+* rak_2245 
+* rak_2246
+* rak_2247
+* rak_2287 
+* rak_5146
+* rak_5148 
+* risinghf_rhf0m301
+* sandbox_lorago_port
+* seeed_wm1302
+* semtech_sx1302c490gw1
+* semtech_sx1302c868gw1 
+* semtech_sx1302c915gw1
+* semtech_sx1302css868gw1
+* semtech_sx1302css915gw1 
+* semtech_sx1302css923gw1
+* semtech_sx1280z3dsfgw1  
+* waveshare_sx1302_lorawan_gateway_hat
+* wifx_lorix_one 
 
 
 ## License
