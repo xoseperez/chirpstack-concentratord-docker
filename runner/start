@@ -1,18 +1,12 @@
 #!/bin/bash
 
-SERVICE_NAME=concentratord
-INFO_FILE="service-info"
-
 # -----------------------------------------------------------------------------
 # Colors
 # -----------------------------------------------------------------------------
 
+COLOR_INFO="\e[32m" # green
+COLOR_ERROR="\e[31m" # red
 COLOR_RESET="\e[0m"
-COLOR_RED="\e[31m"
-COLOR_GREEN="\e[32m"
-
-COLOR_INFO=$COLOR_GREEN
-COLOR_ERROR=$COLOR_RED
 
 # -----------------------------------------------------------------------------
 # Identify concentrator
@@ -156,11 +150,7 @@ HAS_GPS=${HAS_GPS:-0}
 # IPC SOCKET
 # -----------------------------------------------------------------------------
 
-if [ "$SOCKET_PREFIX" != "" ]; then
-    SOCKET="ipc:///tmp/concentratord_${SOCKET_PREFIX}_"
-else
-    SOCKET="ipc:///tmp/concentratord_"
-fi
+SOCKET_NAME=${SOCKET_NAME:-"concentratord"}
 
 # -----------------------------------------------------------------------------
 # Get binary
@@ -190,9 +180,7 @@ sed "s/region=\".*\"/region=\"${REGION^^}\"/" -i concentratord.toml
 sed "s/gateway_id=\".*\"/gateway_id=\"${GATEWAY_EUI^^}\"/" -i concentratord.toml 
 sed "s/log_level=\".*\"/log_level=\"${DEBUG:-"INFO"}\"/" -i concentratord.toml 
 sed "s/log_to_syslog=.*/log_to_syslog=false/" -i concentratord.toml 
-if [ "$SOCKET_PREFIX" != "" ]; then
-    sed "s/_bind=\"ipc:\/\/\/tmp\/concentratord_/_bind=\"ipc:\/\/\/tmp\/concentratord_${SOCKET_PREFIX}_/" -i concentratord.toml 
-fi
+sed "s/_bind=\"ipc:\/\/\/tmp\/concentratord_/_bind=\"ipc:\/\/\/tmp\/${SOCKET_NAME}_/" -i concentratord.toml 
 
 if [[ "$DESIGN" == "sx1301" ]]; then
     sed "s/model_flags=.*/model_flags=${MODEL_FLAGS}/" -i concentratord.toml 
@@ -209,56 +197,44 @@ fi
 # Info
 # -----------------------------------------------------------------------------
 
-rm -f $INFO_FILE
+echo -e "${COLOR_INFO}"
 
-echo -e "#!/bin/sh" > $INFO_FILE
-echo -e "GATEWAY_EUI=\$( ./gateway-id -c ${SOCKET}command  )" >> $INFO_FILE
-echo -e "cat << EOF" >> $INFO_FILE
-
-echo -e "${COLOR_INFO}" | tee -a $INFO_FILE
-
-echo -e "------------------------------------------------------------------" | tee -a $INFO_FILE
-
-echo -e "ChirpStack" | tee -a $INFO_FILE
-toilet -f future ${SERVICE_NAME} | tee -a $INFO_FILE
-echo -e "Concentrator HAL daemon for LoRa gateways" | tee -a $INFO_FILE
-./chirpstack-concentratord -V | tee -a $INFO_FILE
-
-echo -e "------------------------------------------------------------------" | tee -a $INFO_FILE
-
+echo -e "${COLOR_INFO}------------------------------------------------------------------"
+echo -e "${COLOR_INFO}$( ./chirpstack-concentratord -V )"
+echo -e "${COLOR_INFO}Concentrator HAL daemon for LoRa(WAN) gateways"
+echo -e "${COLOR_INFO}------------------------------------------------------------------"
 if [[ "$MODEL" != "$ORIGINAL_MODEL" ]]; then
-echo -e "Model:          $MODEL ($ORIGINAL_MODEL)" | tee -a $INFO_FILE
+echo -e "${COLOR_INFO}Model:          $MODEL ($ORIGINAL_MODEL)"
 else
-echo -e "Model:          $MODEL" | tee -a $INFO_FILE
+echo -e "${COLOR_INFO}Model:          $MODEL"
 fi
-echo -e "Design:         ${DESIGN}" | tee -a $INFO_FILE
-echo -e "Interface:      $INTERFACE" | tee -a $INFO_FILE
+echo -e "${COLOR_INFO}Design:         ${DESIGN}"
+echo -e "${COLOR_INFO}Interface:      $INTERFACE"
 if [[ "$INTERFACE" == "SPI" ]]; then
-echo -e "Reset GPIO:     $RESET_GPIO" | tee -a $INFO_FILE
-echo -e "Enable GPIO:    $POWER_EN_GPIO" | tee -a $INFO_FILE
+echo -e "${COLOR_INFO}Reset GPIO:     $RESET_GPIO"
+echo -e "${COLOR_INFO}Enable GPIO:    $POWER_EN_GPIO"
 fi
 if [[ "$DESIGN" == "sx1301" ]]; then
-echo -e "Gateway EUI:    $GATEWAY_EUI" | tee -a $INFO_FILE
+echo -e "${COLOR_INFO}Gateway EUI:    $GATEWAY_EUI"
 else
-echo -e "Gateway EUI:    (run 'docker exec chirpstack-concentratord $INFO_FILE')"
+echo -e "${COLOR_INFO}Gateway EUI:    (run 'docker exec chirpstack-concentratord gateway_eui')"
 fi
-echo -e "Gateway EUI:    \${GATEWAY_EUI}" >> $INFO_FILE
-echo -e "Region:         $REGION" | tee -a $INFO_FILE
-echo -e "Channels:       $CHANNELS" | tee -a $INFO_FILE
-echo -e "Has GPS:        $HAS_GPS" | tee -a $INFO_FILE
+echo -e "${COLOR_INFO}Region:         $REGION"
+echo -e "${COLOR_INFO}Channels:       $CHANNELS"
+echo -e "${COLOR_INFO}Has GPS:        $HAS_GPS"
+echo -e "${COLOR_INFO}Socket name:    $SOCKET_NAME"
+echo -e "${COLOR_INFO}------------------------------------------------------------------"
+echo -e "${COLOR_INFO}Resources: https://www.chirpstack.io/docs/chirpstack-concentratord"
+echo -e "${COLOR_INFO}           https://github.com/chirpstack/chirpstack-concentratord"
+echo -e "${COLOR_INFO}------------------------------------------------------------------"
+echo -e "${COLOR_RESET}"
 
-echo -e "------------------------------------------------------------------" | tee -a $INFO_FILE
+# -----------------------------------------------------------------------------
+# Manage sockets
+# -----------------------------------------------------------------------------
 
-echo -e "Resources: https://www.chirpstack.io/docs/chirpstack-concentratord" | tee -a $INFO_FILE
-echo -e "           https://github.com/chirpstack/chirpstack-concentratord" | tee -a $INFO_FILE
-
-echo -e "------------------------------------------------------------------" | tee -a $INFO_FILE
- 
-echo -e "${COLOR_RESET}" | tee -a $INFO_FILE
-
-echo -en "EOF" >> $INFO_FILE
-
-chmod +x $INFO_FILE
+rm -rf "/tmp/${SOCKET_NAME}_event"
+rm -rf "/tmp/${SOCKET_NAME}_command"
 
 # -----------------------------------------------------------------------------
 # Start concentratord
