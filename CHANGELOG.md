@@ -1,7 +1,8 @@
 # Changelog
 
-## 4.3.6r2 (Unreleased)
+## 4.4.2r1 (2024-09-03)
 
+* Based on chirpstack-concentratord-4.4.2r1 (special release)
 * Move to alpine based image (lighter)
 * Changed IPC socket naming to make it compatible with other chirpstack services
 * Added specific `gateway_eui` script
