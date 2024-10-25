@@ -239,4 +239,4 @@ rm -rf "/tmp/${SOCKET_NAME}_command"
 # -----------------------------------------------------------------------------
 # Start concentratord
 # -----------------------------------------------------------------------------
-./chirpstack-concentratord -c ./concentratord.toml -c ./region.toml -c ./channels.toml
+exec ./chirpstack-concentratord -c ./concentratord.toml -c ./region.toml -c ./channels.toml
