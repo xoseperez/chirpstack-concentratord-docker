@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.4.4r1 (2024-10-25)
+
+* Force concentratord process to run as PID1 inside the container
+* Based on chirpstack-concentratord-4.4.4r1 (special release)
+
 ## 4.4.2r1 (2024-09-03)
 
 * Based on chirpstack-concentratord-4.4.2r1 (special release)
