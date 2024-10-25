@@ -12,7 +12,7 @@ services:
     #  context: .
     #  args:
     #    ARCH: amd64
-    #    VERSION: 4.4.2r1
+    #    VERSION: 4.4.4r1
 
     restart: unless-stopped
     privileged: true
