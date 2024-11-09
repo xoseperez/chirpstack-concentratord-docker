@@ -169,10 +169,19 @@ cp "./configs/chirpstack-concentratord-${DESIGN}/region_${REGION}.toml" ./region
 cp "./configs/chirpstack-concentratord-${DESIGN}/channels_${CHANNELS}.toml" ./channels.toml
 
 # Calculate model flags
-MODEL_FLAGS=""
-if [[ "$INTERFACE" == "USB" ]]; then MODEL_FLAGS="$MODEL_FLAGS USB"; fi
-if [[ $HAS_GPS -eq 1 ]]; then MODEL_FLAGS="$MODEL_FLAGS GNSS"; fi
-MODEL_FLAGS=$( echo "${MODEL_FLAGS##*( )}" | sed 's/^/["/' | sed 's/$/"]/' | sed 's/ /","/' )
+if [[ "$INTERFACE" == "USB" ]]; then
+    if [[ $HAS_GPS -eq 1 ]]; then 
+        MODEL_FLAGS='["USB","GNSS"]'
+    else
+        MODEL_FLAGS='["USB"]'
+    fi
+else
+    if [[ $HAS_GPS -eq 1 ]]; then 
+        MODEL_FLAGS='["GNSS"]'
+    else
+        MODEL_FLAGS='[]'
+    fi
+fi
 
 # modify the settings based on environment variables
 sed "s/model=\".*\"/model=\"${MODEL}\"/" -i concentratord.toml 

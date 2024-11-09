@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.4.4r2 (2024-11-09)
+
+* Fix error in USB concentrators (wrong flags format)
+
 ## 4.4.4r1 (2024-10-25)
 
 * Force concentratord process to run as PID1 inside the container
