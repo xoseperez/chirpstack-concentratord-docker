@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.7.1-r1 (2026-11-17)
+
+* Based on chirpstack-concentratord-4.7.1-r1 (special release)
+
 ## 4.5.3r1 (2025-10-29)
 
 * Based on chirpstack-concentratord-4.5.3r1 (special release)

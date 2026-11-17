@@ -1,0 +1,11 @@
+image: xoseperez/chirpstack-concentratord:4.7.1
+tags: ['4.7.1',4,'latest']
+manifests:
+  - image: xoseperez/chirpstack-concentratord:aarch64-latest
+    platform:
+      architecture: arm64
+      os: linux  
+  - image: xoseperez/chirpstack-concentratord:amd64-latest
+    platform:
+      architecture: amd64
+      os: linux  

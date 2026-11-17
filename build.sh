@@ -6,8 +6,8 @@
 # Globals
 # -----------------------------------------------------------------------------
 
-VERSION="4.5.3r1"
-UPSTREAM_VERSION="4.5.3r1"
+VERSION="4.7.1"
+UPSTREAM_VERSION="4.7.1-r1"
 PUSH=0
 TARGETS=()
 MANIFEST_TOOL=manifest-tool
